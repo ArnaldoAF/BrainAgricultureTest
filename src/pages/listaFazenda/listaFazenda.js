@@ -17,6 +17,4 @@ class listaFazenda extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-)(listaFazenda);
+export default listaFazenda;

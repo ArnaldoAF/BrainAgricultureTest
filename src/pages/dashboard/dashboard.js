@@ -17,6 +17,4 @@ class dashboard extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-)(dashboard);
+export default dashboard;
