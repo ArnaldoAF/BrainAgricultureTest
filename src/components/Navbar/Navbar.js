@@ -9,7 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, NavLink  } from 'react-router-dom';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -51,13 +51,17 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
           {pages.map((page) => (
-              <Button
-                key={page.name}
+            <NavLink to={page.path} key={page.name}>
+              <Button 
+                
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Link to={page.path}>a</Link>
-                {page.name}
+                
+                  {page.name}
+                
+                
               </Button>
+              </NavLink>
             ))}
           </Box>
 
