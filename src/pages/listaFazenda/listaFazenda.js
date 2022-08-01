@@ -38,7 +38,7 @@ class listaFazenda extends Component {
     render() {
         return (
             <Container >
-                <NavLink to='formFazenda' >
+                <NavLink to='/formFazenda' >
                     <Button variant="contained">CRIAR </Button>
                 </NavLink>
                 <TableContainer component={Paper}>

@@ -21,6 +21,4 @@ class formFazenda extends Component {
     }
 }
 
-export default connect(
-    mapStateToProps,
-)(formFazenda);
+export default formFazenda
