@@ -7,6 +7,9 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Chip from '@mui/material/Chip';
+import FormControl from '@mui/material/FormControl';
 
 
 const FormFarm = (props) => {
@@ -19,15 +22,38 @@ const FormFarm = (props) => {
         totalArea: props.farm ? props.farm.totalArea : '',
         agrArea: props.farm ? props.farm.agrArea : '',
         vegArea: props.farm ? props.farm.vegArea : '',
-        cultureList: props.farm ? props.farm.cultureList : ''
+        cultureList: props.farm ? props.farm.cultureList : []
     });
+
+    const cultures = [
+        {
+            id: 0,
+            name: 'Soja'
+        },
+        {
+            id: 1,
+            name: 'Milho'
+        },
+        {
+            id: 2,
+            name: 'Algodão'
+        },
+        {
+            id: 3,
+            name: 'Café'
+        },
+        {
+            id: 4,
+            name: 'Cana de Açucar'
+        },
+    ]
 
     const [errorMsg, setErrorMsg] = useState('');
     const { cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList } = farm;
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        const values = [cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList];
+        const values = [cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea];
         let errorMsg = '';
         console.log(values);
 
@@ -36,13 +62,13 @@ const FormFarm = (props) => {
             return value !== '' && value !== '0';
         });
 
-        if (allFieldsFilled) {
+        if (allFieldsFilled && cultureList.length > 0) {
             const farm = {
                 cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
             };
             props.handleOnSubmit(farm);
         } else {
-            errorMsg = 'Please fill out all the fields.';
+            errorMsg = 'Preencha os campos obrigatórios';
         }
         setErrorMsg(errorMsg);
     };
@@ -52,29 +78,29 @@ const FormFarm = (props) => {
         console.log(name);
         console.log(value);
         switch (name) {
-          case 'quantity':
-            if (value === '' || parseInt(value) === +value) {
+            case 'quantity':
+                if (value === '' || parseInt(value) === +value) {
+                    setFarm((prevState) => ({
+                        ...prevState,
+                        [name]: value
+                    }));
+                }
+                break;
+            case 'price':
+                if (value === '' || value.match(/^\d{1,}(\.\d{0,2})?$/)) {
+                    setFarm((prevState) => ({
+                        ...prevState,
+                        [name]: value
+                    }));
+                }
+                break;
+            default:
                 setFarm((prevState) => ({
-                ...prevState,
-                [name]: value
-              }));
-            }
-            break;
-          case 'price':
-            if (value === '' || value.match(/^\d{1,}(\.\d{0,2})?$/)) {
-                setFarm((prevState) => ({
-                ...prevState,
-                [name]: value
-              }));
-            }
-            break;
-          default:
-            setFarm((prevState) => ({
-              ...prevState,
-              [name]: value
-            }));
+                    ...prevState,
+                    [name]: value
+                }));
         }
-      };
+    };
 
 
 
@@ -84,96 +110,110 @@ const FormFarm = (props) => {
             <Box
                 component="form"
                 sx={{
-                    '& .MuiTextField-root': { m: 1, width: '50ch' },
+                    display: 'grid',
+                    gap: 2,
+                    gridTemplateColumns: 'repeat(2, 1fr)'
                 }}
                 noValidate
                 autoComplete="off"
                 onSubmit={handleOnSubmit}
             >
-                
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="CPF"
-                        type="number"
-                        name="cpf"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-disabled"
-                        label="Nome da Fazenda"
-                        name="farmName"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Nome do Produtor"
-                        name="city"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Cidade"
-                        name="state"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Estado"
-                        name="cpf"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Área Total"
-                        type="number"
-                        name="totalArea"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Área Agrícula"
-                        type="number"
-                        name="agrArea"
-                        onChange={handleInputChange}
-                    />
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Área Vegetal"
-                        type="number"
-                        name="vegArea"
-                        onChange={handleInputChange}
-                    />
 
-                    <TextField
-                        id="filled-select-currency"
-                        select
-                        label="Cultura"
-                        name="cultureList"
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="CPF"
+                    type="number"
+                    name="cpf"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-disabled"
+                    label="Nome da Fazenda"
+                    name="farmName"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Nome do Produtor"
+                    name="city"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Cidade"
+                    name="state"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Estado"
+                    name="cpf"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Área Total"
+                    type="number"
+                    name="totalArea"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Área Agrícula"
+                    type="number"
+                    name="agrArea"
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Área Vegetal"
+                    type="number"
+                    name="vegArea"
+                    onChange={handleInputChange}
+                />
+                <FormControl >
+                    <InputLabel id="demo-multiple-chip-label">Culturas</InputLabel>
+                    <Select
+                        labelId="demo-multiple-chip-label"
+                        id="demo-multiple-chip"
+                        multiple
                         value={cultureList}
+                        name="cultureList"
+                        onChange={handleInputChange}
+                        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                        renderValue={(selected) => (
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={cultures[value].name} />
+                                ))}
+                            </Box>
+                        )}
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </TextField>
+                        {cultures.map((culture) => (
+                            <MenuItem
+                                key={culture.id}
+                                value={culture.id}
+                            >
+                                {culture.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                    <Button variant="contained" onClick={handleOnSubmit}>Submit</Button>
-                    {errorMsg && <p className="errorMsg">{errorMsg}</p>}
-                
+
+                <Button variant="contained" onClick={handleOnSubmit}>Submit</Button>
+                {errorMsg && <p className="errorMsg">{errorMsg}</p>}
                 <div>
-
-
-
                 </div>
             </Box>
-
         </div>
     );
 }
