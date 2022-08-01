@@ -1,4 +1,5 @@
 import React, { Component, useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -10,11 +11,35 @@ import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Chip from '@mui/material/Chip';
 import FormControl from '@mui/material/FormControl';
+import IMask from 'imask';
+import { IMaskInput } from 'react-imask';
+import Input from '@mui/material/Input';
 
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask="000.000.000-00"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        inputRef={ref}
+        onAccept={(value) => onChange({ target: { name: props.name, value } })}
+        overwrite
+      />
+    );
+
+    
+  });
+  TextMaskCustom.propTypes = {
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
 
 const FormFarm = (props) => {
     const [farm, setFarm] = useState({
-        cpf: props.farm ? props.farm.bookname : '',
+        cpf: props.farm ? props.farm.cpf : '00000000000',
         farmName: props.farm ? props.farm.farmName : '',
         producerName: props.farm ? props.farm.producerName : '',
         city: props.farm ? props.farm.city : '',
@@ -101,6 +126,7 @@ const FormFarm = (props) => {
                 }));
         }
     };
+    
 
 
 
@@ -119,13 +145,12 @@ const FormFarm = (props) => {
                 onSubmit={handleOnSubmit}
             >
 
-                <TextField
+                <Input
                     required
                     id="outlined-required"
                     label="CPF"
-                    type="number"
                     name="cpf"
-                    onChange={handleInputChange}
+                    inputComponent={TextMaskCustom}
                 />
                 <TextField
                     required
