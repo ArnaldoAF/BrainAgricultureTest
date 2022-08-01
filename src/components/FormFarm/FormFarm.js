@@ -18,24 +18,24 @@ import Input from '@mui/material/Input';
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
     return (
-      <IMaskInput
-        {...other}
-        mask="000.000.000-00"
-        definitions={{
-          '#': /[1-9]/,
-        }}
-        inputRef={ref}
-        onAccept={(value) => onChange({ target: { name: props.name, value } })}
-        overwrite
-      />
+        <IMaskInput
+            {...other}
+            mask="000.000.000-00"
+            definitions={{
+                '#': /[1-9]/,
+            }}
+            inputRef={ref}
+            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            overwrite
+        />
     );
 
-    
-  });
-  TextMaskCustom.propTypes = {
+
+});
+TextMaskCustom.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-  };
+};
 
 const FormFarm = (props) => {
     const [farm, setFarm] = useState({
@@ -126,7 +126,7 @@ const FormFarm = (props) => {
                 }));
         }
     };
-    
+
 
 
 
@@ -144,19 +144,21 @@ const FormFarm = (props) => {
                 autoComplete="off"
                 onSubmit={handleOnSubmit}
             >
-
-                <Input
-                    required
-                    id="outlined-required"
-                    label="CPF"
-                    name="cpf"
-                    inputComponent={TextMaskCustom}
-                />
+                <FormControl variant="standard">
+                    <InputLabel htmlFor="formatted-text-mask-input">CPF</InputLabel>
+                    <Input
+                        required
+                        id="outlined-required"
+                        name="cpf"
+                        inputComponent={TextMaskCustom}
+                    />
+                </FormControl>
                 <TextField
                     required
                     id="outlined-disabled"
                     label="Nome da Fazenda"
                     name="farmName"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -164,6 +166,7 @@ const FormFarm = (props) => {
                     id="outlined-required"
                     label="Nome do Produtor"
                     name="city"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -171,6 +174,7 @@ const FormFarm = (props) => {
                     id="outlined-required"
                     label="Cidade"
                     name="state"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -178,6 +182,7 @@ const FormFarm = (props) => {
                     id="outlined-required"
                     label="Estado"
                     name="cpf"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -186,6 +191,7 @@ const FormFarm = (props) => {
                     label="Área Total"
                     type="number"
                     name="totalArea"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -194,6 +200,7 @@ const FormFarm = (props) => {
                     label="Área Agrícula"
                     type="number"
                     name="agrArea"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -202,6 +209,7 @@ const FormFarm = (props) => {
                     label="Área Vegetal"
                     type="number"
                     name="vegArea"
+                    variant="standard"
                     onChange={handleInputChange}
                 />
                 <FormControl >
