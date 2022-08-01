@@ -29,9 +29,24 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
             overwrite
         />
     );
-
-
 });
+
+const TextMaskCustomCNPJ = React.forwardRef(function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <IMaskInput
+            {...other}
+            mask="00.000.000/0000-00"
+            definitions={{
+                '#': /[1-9]/,
+            }}
+            inputRef={ref}
+            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            overwrite
+        />
+    );
+});
+
 TextMaskCustom.propTypes = {
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -39,7 +54,7 @@ TextMaskCustom.propTypes = {
 
 const FormFarm = (props) => {
     const [farm, setFarm] = useState({
-        cpf: props.farm ? props.farm.cpf : '00000000000',
+        cpf: props.farm ? props.farm.cpf : '',
         farmName: props.farm ? props.farm.farmName : '',
         producerName: props.farm ? props.farm.producerName : '',
         city: props.farm ? props.farm.city : '',
@@ -147,9 +162,10 @@ const FormFarm = (props) => {
                 <FormControl variant="standard">
                     <InputLabel htmlFor="formatted-text-mask-input">CPF</InputLabel>
                     <Input
-                        required
+                        value={farm.cpf}
                         id="outlined-required"
                         name="cpf"
+                        onChange={handleInputChange}
                         inputComponent={TextMaskCustom}
                     />
                 </FormControl>
