@@ -55,6 +55,7 @@ TextMaskCustom.propTypes = {
 const FormFarm = (props) => {
     const [farm, setFarm] = useState({
         cpf: props.farm ? props.farm.cpf : '',
+        cnpj: props.farm ? props.farm.cnpj : '',
         farmName: props.farm ? props.farm.farmName : '',
         producerName: props.farm ? props.farm.producerName : '',
         city: props.farm ? props.farm.city : '',
@@ -89,11 +90,11 @@ const FormFarm = (props) => {
     ]
 
     const [errorMsg, setErrorMsg] = useState('');
-    const { cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList } = farm;
+    const { cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList } = farm;
 
     const handleOnSubmit = (event) => {
         event.preventDefault();
-        const values = [cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea];
+        const values = [cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea];
         let errorMsg = '';
         console.log(values);
 
@@ -104,7 +105,7 @@ const FormFarm = (props) => {
 
         if (allFieldsFilled && cultureList.length > 0) {
             const farm = {
-                cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
+                cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
             };
             props.handleOnSubmit(farm);
         } else {
@@ -167,6 +168,16 @@ const FormFarm = (props) => {
                         name="cpf"
                         onChange={handleInputChange}
                         inputComponent={TextMaskCustom}
+                    />
+                </FormControl>
+                <FormControl variant="standard">
+                    <InputLabel htmlFor="formatted-text-mask-input">CNPJ</InputLabel>
+                    <Input
+                        value={farm.cnpj}
+                        id="outlined-required"
+                        name="cnpj"
+                        onChange={handleInputChange}
+                        inputComponent={TextMaskCustomCNPJ}
                     />
                 </FormControl>
                 <TextField
