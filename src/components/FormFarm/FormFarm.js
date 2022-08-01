@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 
 const FormFarm = (props) => {
@@ -27,6 +29,7 @@ const FormFarm = (props) => {
         event.preventDefault();
         const values = [cpf, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList];
         let errorMsg = '';
+        console.log(values);
 
         const allFieldsFilled = values.every((field) => {
             const value = `${field}`.trim();
@@ -44,6 +47,35 @@ const FormFarm = (props) => {
         setErrorMsg(errorMsg);
     };
 
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        console.log(name);
+        console.log(value);
+        switch (name) {
+          case 'quantity':
+            if (value === '' || parseInt(value) === +value) {
+                setFarm((prevState) => ({
+                ...prevState,
+                [name]: value
+              }));
+            }
+            break;
+          case 'price':
+            if (value === '' || value.match(/^\d{1,}(\.\d{0,2})?$/)) {
+                setFarm((prevState) => ({
+                ...prevState,
+                [name]: value
+              }));
+            }
+            break;
+          default:
+            setFarm((prevState) => ({
+              ...prevState,
+              [name]: value
+            }));
+        }
+      };
+
 
 
     return (
@@ -56,62 +88,87 @@ const FormFarm = (props) => {
                 }}
                 noValidate
                 autoComplete="off"
+                onSubmit={handleOnSubmit}
             >
-                <div>
+                
                     <TextField
                         required
                         id="outlined-required"
                         label="CPF"
                         type="number"
+                        name="cpf"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-disabled"
                         label="Nome da Fazenda"
+                        name="farmName"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Nome do Produtor"
+                        name="city"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Cidade"
+                        name="state"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Estado"
+                        name="cpf"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Área Total"
                         type="number"
+                        name="totalArea"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Área Agrícula"
                         type="number"
+                        name="agrArea"
+                        onChange={handleInputChange}
                     />
                     <TextField
                         required
                         id="outlined-required"
                         label="Área Vegetal"
                         type="number"
+                        name="vegArea"
+                        onChange={handleInputChange}
                     />
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Age"
+
+                    <TextField
+                        id="filled-select-currency"
+                        select
+                        label="Cultura"
+                        name="cultureList"
+                        value={cultureList}
                     >
                         <MenuItem value={10}>Ten</MenuItem>
                         <MenuItem value={20}>Twenty</MenuItem>
                         <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
+                    </TextField>
+
+                    <Button variant="contained" onClick={handleOnSubmit}>Submit</Button>
+                    {errorMsg && <p className="errorMsg">{errorMsg}</p>}
+                
+                <div>
+
 
 
                 </div>
