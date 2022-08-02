@@ -8,17 +8,20 @@ function mapStateToProps(state) {
     };
 }
 
-class formFazenda extends Component {
-    render() {
-        const handleOnSubmit = (book) => {
-            console.log(book);
-          };
-        return (
-            <div>
-                <FormFarm handleOnSubmit={handleOnSubmit} />
-            </div>
-        );
-    }
+const formFazenda = ({ history, farms, setFarms }) => {
+
+
+    const handleOnSubmit = (farm) => {
+        setFarms([farm, ...farms]);
+        history.push('/');
+    };
+    return (
+        <React.Fragment>
+            <FormFarm handleOnSubmit={handleOnSubmit} />
+        </React.Fragment>
+
+    );
+
 }
 
 export default formFazenda

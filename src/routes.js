@@ -1,5 +1,6 @@
 import React from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, BrowserRouter, Routes,Switch, } from "react-router-dom";
+import useLocalStorage from './hooks/useLocalStorage.js';
 
 import Dashboard from "./pages/dashboard/dashboard";
 import ListaFazenda from "./pages/listaFazenda/listaFazenda";
@@ -14,6 +15,7 @@ import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 
 const Rotas = () => {
+   const [farms, setFarms] = useLocalStorage('books', []);
 
    return (
       <BrowserRouter>
@@ -26,6 +28,7 @@ const Rotas = () => {
                      <Route element={<Dashboard />} path="/dashboard" />
                      <Route element={<ListaFazenda />} path="/listaFazenda" />
                      <Route element={<FormFazenda />} path="/formFazenda" />
+                     
                   </Routes>
                </CardContent>
             </Card>

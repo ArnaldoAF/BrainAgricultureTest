@@ -1,4 +1,6 @@
 import React, { Component, useState } from 'react';
+
+import { Route, BrowserRouter, Routes,Switch, useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from '@mui/material/TextField';
@@ -14,6 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import IMask from 'imask';
 import { IMaskInput } from 'react-imask';
 import Input from '@mui/material/Input';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
@@ -66,6 +69,9 @@ const FormFarm = (props) => {
         cultureList: props.farm ? props.farm.cultureList : []
     });
 
+    let navigate = useNavigate();
+    const [farms, setFarms] = useLocalStorage('farms', []);
+
     const cultures = [
         {
             id: 0,
@@ -92,24 +98,38 @@ const FormFarm = (props) => {
     const [errorMsg, setErrorMsg] = useState('');
     const { cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList } = farm;
 
-    const handleOnSubmit = (event) => {
+    const handleOnSubmit = async (event) => {
+
         event.preventDefault();
-        const values = [cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea];
+        const values = [farmName, producerName, city, state, totalArea, agrArea, vegArea];
+        const documents = [cpf, cnpj];
         let errorMsg = '';
-        console.log(values);
-        console.log(cultureList.length);
 
         const allFieldsFilled = values.every((field) => {
             const value = `${field}`.trim();
             return value !== '' && value !== '0';
         });
 
-        if (allFieldsFilled && cultureList.length > 0) {
+        const allFieldsFilledDocuments = documents.some((field) => {
+            const value = `${field}`.trim();
+            return value !== '' && value !== '0';
+        });
+        console.log(farms);
+        console.log(values);
+        console.log(allFieldsFilled);
+        console.log(allFieldsFilledDocuments);
+        console.log(cultureList.length);
+
+        if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments) {
             console.log("valido")
             const farm = {
                 cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
             };
-            props.handleOnSubmit(farm);
+            
+            console.log(farm);
+            await setFarms([farm, ...farms]);
+            console.log(farms);
+            navigate('/listaFazenda');
         } else {
             errorMsg = 'Preencha os campos obrigatórios';
         }
@@ -118,31 +138,11 @@ const FormFarm = (props) => {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        console.log(name);
-        console.log(value);
-        switch (name) {
-            case 'quantity':
-                if (value === '' || parseInt(value) === +value) {
-                    setFarm((prevState) => ({
-                        ...prevState,
-                        [name]: value
-                    }));
-                }
-                break;
-            case 'price':
-                if (value === '' || value.match(/^\d{1,}(\.\d{0,2})?$/)) {
-                    setFarm((prevState) => ({
-                        ...prevState,
-                        [name]: value
-                    }));
-                }
-                break;
-            default:
-                setFarm((prevState) => ({
-                    ...prevState,
-                    [name]: value
-                }));
-        }
+
+        setFarm((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
 
@@ -202,7 +202,7 @@ const FormFarm = (props) => {
                     required
                     id="outlined-required"
                     label="Cidade"
-                    name="state"
+                    name="city"
                     variant="standard"
                     onChange={handleInputChange}
                 />
@@ -210,7 +210,7 @@ const FormFarm = (props) => {
                     required
                     id="outlined-required"
                     label="Estado"
-                    name="cpf"
+                    name="state"
                     variant="standard"
                     onChange={handleInputChange}
                 />
