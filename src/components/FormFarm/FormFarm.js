@@ -97,6 +97,7 @@ const FormFarm = (props) => {
         const values = [cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea];
         let errorMsg = '';
         console.log(values);
+        console.log(cultureList.length);
 
         const allFieldsFilled = values.every((field) => {
             const value = `${field}`.trim();
@@ -104,6 +105,7 @@ const FormFarm = (props) => {
         });
 
         if (allFieldsFilled && cultureList.length > 0) {
+            console.log("valido")
             const farm = {
                 cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
             };
@@ -192,7 +194,7 @@ const FormFarm = (props) => {
                     required
                     id="outlined-required"
                     label="Nome do Produtor"
-                    name="city"
+                    name="producerName"
                     variant="standard"
                     onChange={handleInputChange}
                 />
