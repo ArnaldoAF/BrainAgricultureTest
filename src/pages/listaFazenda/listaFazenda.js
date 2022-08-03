@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
+import { Route, BrowserRouter, Routes,Switch, useNavigate } from "react-router-dom";
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -19,6 +20,7 @@ import Stack from '@mui/material/Stack';
 
 import { Link, NavLink } from 'react-router-dom';
 import { fillFarmList, getFarmList, deleteFarm } from '../../store/farmlist';
+import { setCurrentFarm } from '../../store/currentFarm';
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -44,10 +46,12 @@ function mapStateToProps(state) {
 const ListaFazenda = () => {
     const dispatch = useDispatch();
     const lista = useSelector((state) => state.farmlist.list)
+    let navigate = useNavigate();
 
     const [farmLista, setFarmLista] = useState([]);
     useEffect(() => {
         dispatch(fillFarmList())
+        dispatch(setCurrentFarm(null));
         console.log(lista)
     }, []);
 
@@ -57,6 +61,10 @@ const ListaFazenda = () => {
         dispatch(deleteFarm(farm))
     }
 
+    const sendEditFazenda = async (farm) => {
+        dispatch(setCurrentFarm(farm));
+        navigate('/formFazenda');
+    }
 
 
 
@@ -102,7 +110,7 @@ const ListaFazenda = () => {
                                 <TableCell align="right">{farm.cultureList.map(x => x.name).join()}</TableCell>
                                 <TableCell align="center">
                                     <Stack direction="row" spacing={2}>
-                                        <IconButton aria-label="edit" color="primary">
+                                        <IconButton aria-label="edit" color="primary" onClick={() => sendEditFazenda(farm)}>
                                             <EditIcon />
                                         </IconButton>
                                         <IconButton aria-label="delete" color="error" onClick={() => deleteFazenda(farm)}>

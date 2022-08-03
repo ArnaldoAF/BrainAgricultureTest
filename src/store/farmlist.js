@@ -15,9 +15,6 @@ export const farmListSlicer = createSlice({
               } catch (error) {
                 state.list = [];
               }
-              console.log("fillFarmList");
-              console.log(state.list);
-              console.log(action.payload);
         },
         getFarmList: (state) => {
             
@@ -39,10 +36,15 @@ export const farmListSlicer = createSlice({
             state.list = state.list.filter(x => x.cpf != action.payload.cpf)
             window.localStorage.setItem("farms", JSON.stringify(state.list));
         },
+        editFarm: (state, action) => {
+            const index = state.list.findIndex(x => x.cpf == action.payload.cpf);
+            state.list.splice(index, 1, action.payload);
+            window.localStorage.setItem("farms", JSON.stringify(state.list));
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { getFarmList, addFarm, setFarmList, fillFarmList, deleteFarm } = farmListSlicer.actions
+export const { getFarmList, addFarm, setFarmList, fillFarmList, deleteFarm, editFarm } = farmListSlicer.actions
 
 export default farmListSlicer.reducer

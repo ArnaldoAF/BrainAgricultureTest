@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 
-import { Route, BrowserRouter, Routes,Switch, useNavigate } from "react-router-dom";
+import { Route, BrowserRouter, Routes, Switch, useNavigate } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from '@mui/material/TextField';
@@ -19,11 +19,12 @@ import Input from '@mui/material/Input';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { addFarm } from '../../store/farmlist'
+import { addFarm, editFarm } from '../../store/farmlist'
+import { setCurrentFarm } from '../../store/currentFarm';
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
-    
+
     return (
         <IMaskInput
             {...other}
@@ -72,11 +73,44 @@ const FormFarm = (props) => {
         vegArea: props.farm ? props.farm.vegArea : '',
         cultureList: props.farm ? props.farm.cultureList : []
     });
+    const currentFarm = useSelector((state) => state.currentFarm.farm)
 
     let navigate = useNavigate();
     const dispatch = useDispatch()
 
     const [farms, setFarms] = useLocalStorage('farms', []);
+
+    useEffect(() => {
+        if (currentFarm) {
+            console.log("useEffect")
+            console.log(currentFarm);
+            setFarm(() => ({
+                cpf: currentFarm.cpf,
+                cnpj: currentFarm.cnpj,
+                farmName: currentFarm.farmName,
+                producerName: currentFarm.producerName,
+                city: currentFarm.city,
+                state: currentFarm.state,
+                totalArea: currentFarm.totalArea,
+                agrArea: currentFarm.agrArea,
+                vegArea: currentFarm.vegArea,
+                cultureList: currentFarm.cultureList.map(x => x.id),
+            }));
+/*
+            cpf = currentFarm.cpf;
+            cnpj = currentFarm.cnpj;
+            farmName = currentFarm.farmName;
+            producerName = currentFarm.producerName;
+            city = currentFarm.city;
+            state = currentFarm.state;
+            totalArea = currentFarm.totalArea;
+            agrArea = currentFarm.agrArea;
+            vegArea = currentFarm.vegArea;
+            cultureList = currentFarm.cultureList.map(x => x.id);
+*/
+        }
+
+    }, []);
 
     const cultures = [
         {
@@ -120,6 +154,7 @@ const FormFarm = (props) => {
             const value = `${field}`.trim();
             return value !== '' && value !== '0';
         });
+        console.log("handleOnSubmit");
         console.log(farms);
         console.log(values);
         console.log(allFieldsFilled);
@@ -128,13 +163,15 @@ const FormFarm = (props) => {
 
         if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments) {
             console.log("valido")
-            const farm = {
-                cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, 
+            const localFarm = {
+                cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea,
                 cultureList: cultures.filter(c => cultureList.includes(c.id))
             };
-            
-            console.log(farm);
-            await dispatch(addFarm(farm))
+
+            console.log(localFarm);
+            if(currentFarm) await dispatch(editFarm(localFarm))
+            else await dispatch(addFarm(localFarm));
+            await dispatch(setCurrentFarm(null));
             //await setFarms([farm, ...farms]);
             console.log(farms);
             navigate('/listaFazenda');
@@ -158,7 +195,8 @@ const FormFarm = (props) => {
 
     return (
         <div>
-            <h1>CRIAR FAZENDA</h1>
+            <h1>{currentFarm ? 'EDITAR ' : 'CRIAR '}FAZENDA</h1>
+            {farm.farmName}
             <Box
                 component="form"
                 sx={{
@@ -178,6 +216,7 @@ const FormFarm = (props) => {
                         name="cpf"
                         onChange={handleInputChange}
                         inputComponent={TextMaskCustom}
+                        disabled={currentFarm}
                     />
                 </FormControl>
                 <FormControl variant="standard">
@@ -188,6 +227,7 @@ const FormFarm = (props) => {
                         name="cnpj"
                         onChange={handleInputChange}
                         inputComponent={TextMaskCustomCNPJ}
+                        disabled={currentFarm}
                     />
                 </FormControl>
                 <TextField
@@ -196,6 +236,7 @@ const FormFarm = (props) => {
                     label="Nome da Fazenda"
                     name="farmName"
                     variant="standard"
+                    value={farm.farmName}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -204,6 +245,7 @@ const FormFarm = (props) => {
                     label="Nome do Produtor"
                     name="producerName"
                     variant="standard"
+                    value={farm.producerName}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -212,6 +254,7 @@ const FormFarm = (props) => {
                     label="Cidade"
                     name="city"
                     variant="standard"
+                    value={farm.city}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -220,6 +263,7 @@ const FormFarm = (props) => {
                     label="Estado"
                     name="state"
                     variant="standard"
+                    value={farm.state}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -229,6 +273,7 @@ const FormFarm = (props) => {
                     type="number"
                     name="totalArea"
                     variant="standard"
+                    value={farm.totalArea}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -238,6 +283,7 @@ const FormFarm = (props) => {
                     type="number"
                     name="agrArea"
                     variant="standard"
+                    value={farm.agrArea}
                     onChange={handleInputChange}
                 />
                 <TextField
@@ -247,6 +293,7 @@ const FormFarm = (props) => {
                     type="number"
                     name="vegArea"
                     variant="standard"
+                    value={farm.vegArea}
                     onChange={handleInputChange}
                 />
                 <FormControl >
