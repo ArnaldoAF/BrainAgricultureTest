@@ -155,13 +155,14 @@ const FormFarm = (props) => {
             return value !== '' && value !== '0';
         });
         console.log("handleOnSubmit");
-        console.log(farms);
-        console.log(values);
-        console.log(allFieldsFilled);
-        console.log(allFieldsFilledDocuments);
-        console.log(cultureList.length);
+        console.log(totalArea);
+        console.log(agrArea);
+        console.log(vegArea);
+        
+        const areaValid = parseFloat(totalArea) >= parseFloat(agrArea) + parseFloat(vegArea);
+        console.log(areaValid);
 
-        if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments) {
+        if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments && areaValid) {
             console.log("valido")
             const localFarm = {
                 cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea,
@@ -175,6 +176,8 @@ const FormFarm = (props) => {
             //await setFarms([farm, ...farms]);
             console.log(farms);
             navigate('/listaFazenda');
+        } else if (!areaValid) {
+            errorMsg = 'A soma da area agricultural e da vegeração não deve ser mais que o total';
         } else {
             errorMsg = 'Preencha os campos obrigatórios';
         }
