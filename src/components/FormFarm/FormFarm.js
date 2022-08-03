@@ -199,7 +199,6 @@ const FormFarm = (props) => {
     return (
         <div>
             <h1>{currentFarm ? 'EDITAR ' : 'CRIAR '}FAZENDA</h1>
-            {farm.farmName}
             <Box
                 component="form"
                 sx={{
