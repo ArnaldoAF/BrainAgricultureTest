@@ -129,7 +129,8 @@ const FormFarm = (props) => {
         if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments) {
             console.log("valido")
             const farm = {
-                cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, cultureList
+                cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea, 
+                cultureList: cultures.filter(c => cultureList.includes(c.id))
             };
             
             console.log(farm);

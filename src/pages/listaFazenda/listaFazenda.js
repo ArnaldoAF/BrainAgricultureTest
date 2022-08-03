@@ -60,26 +60,36 @@ const ListaFazenda = () => {
                 <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                            <TableCell>CPF</TableCell>
+                            <TableCell align="right">CNPJ</TableCell>
+                            <TableCell align="right">Nome do Produtor</TableCell>
+                            <TableCell align="right">Nome da Fazenda</TableCell>
+                            <TableCell align="right">Cidade</TableCell>
+                            <TableCell align="right">Estado</TableCell>
+                            <TableCell align="right">Area Total</TableCell>
+                            <TableCell align="right">Area Agriculturavel</TableCell>
+                            <TableCell align="right">Area Vegetação</TableCell>
+                            <TableCell align="right">Culturas</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
+                        {lista.map((farm) => (
                             <TableRow
-                                key={row.name}
+                                key={farm.cpf}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {farm.cpf}
                                 </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                                <TableCell align="right">{row.protein}</TableCell>
+                                <TableCell align="right">{farm.cnpj}</TableCell>
+                                <TableCell align="right">{farm.producerName}</TableCell>
+                                <TableCell align="right">{farm.farmName}</TableCell>
+                                <TableCell align="right">{farm.city}</TableCell>
+                                <TableCell align="right">{farm.state}</TableCell>
+                                <TableCell align="right">{farm.totalArea}</TableCell>
+                                <TableCell align="right">{farm.agrArea}</TableCell>
+                                <TableCell align="right">{farm.vegArea}</TableCell>
+                                <TableCell align="right">{farm.cultureList.map(x => x.name).join()}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
