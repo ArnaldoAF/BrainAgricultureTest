@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -6,10 +6,17 @@ import SimpleCard from '../../components/Dashboard/SimpleCard';
 import GraficoPizza from '../../components/Dashboard/GraficoPizza';
 import { useSelector, useDispatch } from 'react-redux'
 
+import { fillFarmList, getFarmList, deleteFarm } from '../../store/farmlist';
+import { setCurrentFarm } from '../../store/currentFarm';
+
 const Dashboard = () => {
     const listaFarm = useSelector((state) => state.farmlist.list);
     const somaArea = listaFarm?.map(x => x.totalArea).reduce((partialSum, a) => parseFloat(partialSum) + parseFloat(a), 0)
-
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(fillFarmList())
+        dispatch(setCurrentFarm(null));
+    }, []);
     const listaEstados = [...new Set(listaFarm?.map(x => x.state))];
     let listaEstadosValores = [];
     listaEstados.forEach(estado => {
