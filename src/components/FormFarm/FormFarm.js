@@ -18,8 +18,12 @@ import { IMaskInput } from 'react-imask';
 import Input from '@mui/material/Input';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
+import { useSelector, useDispatch } from 'react-redux'
+import { addFarm} from '../../store/farmlist'
+
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
+    
     return (
         <IMaskInput
             {...other}
@@ -70,6 +74,8 @@ const FormFarm = (props) => {
     });
 
     let navigate = useNavigate();
+    const dispatch = useDispatch()
+
     const [farms, setFarms] = useLocalStorage('farms', []);
 
     const cultures = [
@@ -127,7 +133,8 @@ const FormFarm = (props) => {
             };
             
             console.log(farm);
-            await setFarms([farm, ...farms]);
+            await dispatch(addFarm(farm))
+            //await setFarms([farm, ...farms]);
             console.log(farms);
             navigate('/listaFazenda');
         } else {

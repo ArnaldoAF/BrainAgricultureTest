@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import useLocalStorage from '../../hooks/useLocalStorage';
 import React, { Component, useState } from 'react';
 
 export const farmListSlicer = createSlice({
