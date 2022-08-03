@@ -82,8 +82,6 @@ const FormFarm = (props) => {
 
     useEffect(() => {
         if (currentFarm) {
-            console.log("useEffect")
-            console.log(currentFarm);
             setFarm(() => ({
                 cpf: currentFarm.cpf,
                 cnpj: currentFarm.cnpj,
@@ -154,27 +152,21 @@ const FormFarm = (props) => {
             const value = `${field}`.trim();
             return value !== '' && value !== '0';
         });
-        console.log("handleOnSubmit");
-        console.log(totalArea);
-        console.log(agrArea);
-        console.log(vegArea);
         
         const areaValid = parseFloat(totalArea) >= parseFloat(agrArea) + parseFloat(vegArea);
-        console.log(areaValid);
+        
 
         if (allFieldsFilled && cultureList.length > 0 & allFieldsFilledDocuments && areaValid) {
-            console.log("valido")
             const localFarm = {
                 cpf, cnpj, farmName, producerName, city, state, totalArea, agrArea, vegArea,
                 cultureList: cultures.filter(c => cultureList.includes(c.id))
             };
 
-            console.log(localFarm);
+
             if(currentFarm) await dispatch(editFarm(localFarm))
             else await dispatch(addFarm(localFarm));
             await dispatch(setCurrentFarm(null));
             //await setFarms([farm, ...farms]);
-            console.log(farms);
             navigate('/listaFazenda');
         } else if (!areaValid) {
             errorMsg = 'A soma da area agricultural e da vegeração não deve ser mais que o total';

@@ -48,16 +48,12 @@ const ListaFazenda = () => {
     const lista = useSelector((state) => state.farmlist.list)
     let navigate = useNavigate();
 
-    const [farmLista, setFarmLista] = useState([]);
     useEffect(() => {
         dispatch(fillFarmList())
         dispatch(setCurrentFarm(null));
-        console.log(lista)
     }, []);
 
     const deleteFazenda = async (farm) => {
-        console.log("delete");
-        console.log(farm);
         dispatch(deleteFarm(farm))
     }
 

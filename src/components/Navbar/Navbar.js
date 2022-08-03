@@ -46,7 +46,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            LOGOoo
+            Brain Agriculture
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
