@@ -4,7 +4,7 @@ import React, { Component, useState } from 'react';
 export const farmListSlicer = createSlice({
     name: 'farmlist',
     initialState: {
-        list: [2],
+        list: [],
     },
     reducers: {
         fillFarmList: (state, action) => { 
@@ -35,10 +35,14 @@ export const farmListSlicer = createSlice({
             state.list = action.payload
             window.localStorage.setItem("farms", JSON.stringify(state.list));
         },
+        deleteFarm: (state, action) => {
+            state.list = state.list.filter(x => x.cpf != action.payload.cpf)
+            window.localStorage.setItem("farms", JSON.stringify(state.list));
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { getFarmList, addFarm, setFarmList, fillFarmList } = farmListSlicer.actions
+export const { getFarmList, addFarm, setFarmList, fillFarmList, deleteFarm } = farmListSlicer.actions
 
 export default farmListSlicer.reducer

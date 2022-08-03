@@ -18,7 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
 import { Link, NavLink } from 'react-router-dom';
-import { fillFarmList, getFarmList } from '../../store/farmlist';
+import { fillFarmList, getFarmList, deleteFarm } from '../../store/farmlist';
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -45,12 +45,17 @@ const ListaFazenda = () => {
     const dispatch = useDispatch();
     const lista = useSelector((state) => state.farmlist.list)
 
-    const [farmLista, setFarmLista] = useState([1]);
+    const [farmLista, setFarmLista] = useState([]);
     useEffect(() => {
         dispatch(fillFarmList())
         console.log(lista)
     }, []);
 
+    const deleteFazenda = async (farm) => {
+        console.log("delete");
+        console.log(farm);
+        dispatch(deleteFarm(farm))
+    }
 
 
 
@@ -78,7 +83,7 @@ const ListaFazenda = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {lista.map((farm) => (
+                        {lista.length > 0 && lista.map((farm) => (
                             <TableRow
                                 key={farm.cpf}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -97,13 +102,13 @@ const ListaFazenda = () => {
                                 <TableCell align="right">{farm.cultureList.map(x => x.name).join()}</TableCell>
                                 <TableCell align="center">
                                     <Stack direction="row" spacing={2}>
-                                    <IconButton aria-label="edit" color="primary">
+                                        <IconButton aria-label="edit" color="primary">
                                             <EditIcon />
                                         </IconButton>
-                                        <IconButton aria-label="delete" color="error">
+                                        <IconButton aria-label="delete" color="error" onClick={() => deleteFazenda(farm)}>
                                             <DeleteIcon />
                                         </IconButton>
-                                        
+
                                     </Stack>
                                 </TableCell>
                             </TableRow>
