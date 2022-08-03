@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState} from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -12,9 +12,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 
 import { Link, NavLink } from 'react-router-dom';
-import { fillFarmList, getFarmList} from '../../store/farmlist';
+import { fillFarmList, getFarmList } from '../../store/farmlist';
 
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -42,12 +46,12 @@ const ListaFazenda = () => {
     const lista = useSelector((state) => state.farmlist.list)
 
     const [farmLista, setFarmLista] = useState([1]);
-    useEffect(() =>{
-         dispatch(fillFarmList())
+    useEffect(() => {
+        dispatch(fillFarmList())
         console.log(lista)
     }, []);
 
-    
+
 
 
 
@@ -70,6 +74,7 @@ const ListaFazenda = () => {
                             <TableCell align="right">Area Agriculturavel</TableCell>
                             <TableCell align="right">Area Vegetação</TableCell>
                             <TableCell align="right">Culturas</TableCell>
+                            <TableCell align="right">Opções</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -90,6 +95,17 @@ const ListaFazenda = () => {
                                 <TableCell align="right">{farm.agrArea}</TableCell>
                                 <TableCell align="right">{farm.vegArea}</TableCell>
                                 <TableCell align="right">{farm.cultureList.map(x => x.name).join()}</TableCell>
+                                <TableCell align="center">
+                                    <Stack direction="row" spacing={2}>
+                                    <IconButton aria-label="edit" color="primary">
+                                            <EditIcon />
+                                        </IconButton>
+                                        <IconButton aria-label="delete" color="error">
+                                            <DeleteIcon />
+                                        </IconButton>
+                                        
+                                    </Stack>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
