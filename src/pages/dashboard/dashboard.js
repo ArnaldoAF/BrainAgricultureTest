@@ -8,14 +8,14 @@ import { useSelector, useDispatch } from 'react-redux'
 
 const Dashboard = () => {
     const listaFarm = useSelector((state) => state.farmlist.list);
-    const somaArea = listaFarm?.map(x=>x.totalArea).reduce((partialSum, a) => parseFloat(partialSum) + parseFloat(a), 0)
+    const somaArea = listaFarm?.map(x => x.totalArea).reduce((partialSum, a) => parseFloat(partialSum) + parseFloat(a), 0)
 
-    const listaEstados = [...new Set(listaFarm?.map(x=>x.state))];
+    const listaEstados = [...new Set(listaFarm?.map(x => x.state))];
     let listaEstadosValores = [];
     listaEstados.forEach(estado => {
         listaEstadosValores.push(listaFarm.filter(x => x.state === estado).length)
     }
-        )
+    )
     let dataEstado = {
         labels: listaEstados,
         datasets: [{
@@ -27,9 +27,34 @@ const Dashboard = () => {
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(255, 159, 64, 0.2)',
-              ],
+            ],
             borderColor: 'rgb(255, 99, 132)',
             data: listaEstadosValores,
+        }]
+
+    }
+
+    const listaCulturas = listaFarm?.map(x=>x.cultureList.map(y=>y.name)).flat();
+    const listaCulturasSemRepeticao = [...new Set(listaCulturas)];
+    let listaCulturasValores = [];
+    listaCulturasSemRepeticao.forEach(cultura => {
+        listaCulturasValores.push(listaCulturas.filter(x => x === cultura).length)
+    }
+        )
+    let dataCultura = {
+        labels: listaCulturasSemRepeticao,
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+              ],
+            borderColor: 'rgb(255, 99, 132)',
+            data: listaCulturasValores,
           }]
 
     }
@@ -47,8 +72,10 @@ const Dashboard = () => {
                 ></SimpleCard>
                 <SimpleCard
                     name="area total de fazendas"
-                    value={somaArea }
+                    value={somaArea}
                 ></SimpleCard>
+                <GraficoPizza data={dataEstado} titulo="Distribuição por Estado"></GraficoPizza>
+                <GraficoPizza data={dataCultura} titulo="Distribuição por Cultura"></GraficoPizza>
                 <GraficoPizza data={dataEstado} titulo="Distribuição por Estado"></GraficoPizza>
 
 
