@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -13,7 +13,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 
-import { Link, NavLink  } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { fillFarmList, getFarmList} from '../../store/farmlist';
+
+import { useSelector, useDispatch } from 'react-redux'
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -34,46 +37,58 @@ function mapStateToProps(state) {
     };
 }
 
-class listaFazenda extends Component {
-    render() {
-        return (
-            <Container >
-                <NavLink to='/formFazenda' >
-                    <Button variant="contained">CRIAR </Button>
-                </NavLink>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Dessert (100g serving)</TableCell>
-                                <TableCell align="right">Calories</TableCell>
-                                <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                                <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                                <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.map((row) => (
-                                <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {row.name}
-                                    </TableCell>
-                                    <TableCell align="right">{row.calories}</TableCell>
-                                    <TableCell align="right">{row.fat}</TableCell>
-                                    <TableCell align="right">{row.carbs}</TableCell>
-                                    <TableCell align="right">{row.protein}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+const ListaFazenda = () => {
+    const dispatch = useDispatch();
+    const lista = useSelector((state) => state.farmlist.list)
 
-            </Container>
-        );
-    }
+    const [farmLista, setFarmLista] = useState([1]);
+    useEffect(() =>{
+         dispatch(fillFarmList())
+        console.log(lista)
+    }, []);
+
+    
+
+
+
+    return (
+        <Container >
+            <NavLink to='/formFazenda' >
+                <Button variant="contained">CRIAR </Button>
+            </NavLink>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Dessert (100g serving)</TableCell>
+                            <TableCell align="right">Calories</TableCell>
+                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map((row) => (
+                            <TableRow
+                                key={row.name}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {row.name}
+                                </TableCell>
+                                <TableCell align="right">{row.calories}</TableCell>
+                                <TableCell align="right">{row.fat}</TableCell>
+                                <TableCell align="right">{row.carbs}</TableCell>
+                                <TableCell align="right">{row.protein}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+        </Container>
+    );
 }
 
-export default listaFazenda;
+
+export default ListaFazenda;

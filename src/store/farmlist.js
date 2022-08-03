@@ -4,10 +4,10 @@ import React, { Component, useState } from 'react';
 export const farmListSlicer = createSlice({
     name: 'farmlist',
     initialState: {
-        list: [],
+        list: [2],
     },
     reducers: {
-        fillFarmList: (state) => {
+        fillFarmList: (state, action) => { 
             try {
                 const localValue = window.localStorage.getItem("farms");
                 state.list = localValue ? JSON.parse(localValue) : [];
@@ -15,6 +15,9 @@ export const farmListSlicer = createSlice({
               } catch (error) {
                 state.list = [];
               }
+              console.log("fillFarmList");
+              console.log(state.list);
+              console.log(action.payload);
         },
         getFarmList: (state) => {
             
@@ -36,6 +39,6 @@ export const farmListSlicer = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { getFarmList, addFarm, setFarmList } = farmListSlicer.actions
+export const { getFarmList, addFarm, setFarmList, fillFarmList } = farmListSlicer.actions
 
 export default farmListSlicer.reducer

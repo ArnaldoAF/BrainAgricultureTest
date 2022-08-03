@@ -19,7 +19,7 @@ import Input from '@mui/material/Input';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { addFarm} from '../../store/farmlist'
+import { addFarm } from '../../store/farmlist'
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
