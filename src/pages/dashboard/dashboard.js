@@ -34,6 +34,28 @@ const Dashboard = () => {
 
     }
 
+    const totalAreaAgr = listaFarm?.map(x => x.agrArea).reduce((partialSum, a) => parseFloat(partialSum) + parseFloat(a), 0);
+    const totalAreaVeg = listaFarm?.map(x => x.vegArea).reduce((partialSum, a) => parseFloat(partialSum) + parseFloat(a), 0);
+    
+    
+    let dataArea = {
+        labels: ["Area Vegetação", "Area Agriculturavel"],
+        datasets: [{
+            label: 'My First dataset',
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+            ],
+            borderColor: 'rgb(255, 99, 132)',
+            data: [totalAreaAgr, totalAreaVeg],
+        }]
+
+    }
+
     const listaCulturas = listaFarm?.map(x=>x.cultureList.map(y=>y.name)).flat();
     const listaCulturasSemRepeticao = [...new Set(listaCulturas)];
     let listaCulturasValores = [];
@@ -76,7 +98,7 @@ const Dashboard = () => {
                 ></SimpleCard>
                 <GraficoPizza data={dataEstado} titulo="Distribuição por Estado"></GraficoPizza>
                 <GraficoPizza data={dataCultura} titulo="Distribuição por Cultura"></GraficoPizza>
-                <GraficoPizza data={dataEstado} titulo="Distribuição por Estado"></GraficoPizza>
+                <GraficoPizza data={dataArea} titulo="Distribuição por Area"></GraficoPizza>
 
 
             </Box>
